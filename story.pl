@@ -12,7 +12,7 @@ $answers = Yirl::yeCreateArray($door_dialogue_2, "answers");
 $answer = Yirl::yeCreateArray($answers);
 Yirl::yeCreateString("Go to the console", $answer, "text");
 $new_txt = Yirl::yeCreateArray($answer, "action");
-Yirl::yeCreateString("croco-427.change_img", $new_txt);
+Yirl::yeCreateString("croco-427.do_console", $new_txt);
 Yirl::yeCreateInt(10, $new_txt);
 
 $answer = Yirl::yeCreateArray($answers);

@@ -14,7 +14,7 @@ my $time_acc;
 
 sub enter_action
 {
-    my $SLIDE_L = 1000000;
+    my $SLIDE_L = 550000;
     $next_acc = $time_acc + Yirl::ywidGetTurnTimer();
     $sld_pos = $time_acc / $SLIDE_L;
     $sld_true_pos = $next_acc / $SLIDE_L;
@@ -22,7 +22,7 @@ sub enter_action
 
     if ($sld_true_pos != $sld_pos and $sld_true_pos < $nb_slide) {
 	Yirl::yeReCreateString(@door_open[$sld_true_pos], $cur_txt_img, "text");
-	if (int($sld_true_pos) == 5) {
+	if (int($sld_true_pos) == 7) {
 	    Yirl::ywReplaceEntry2(
 		$cur_cnt,
 		Yirl::yaeString("rgba: 255 155 155 255",
@@ -30,7 +30,7 @@ sub enter_action
 				"background"),
 		1);
 
-	} elsif (int($sld_true_pos) == 6) {
+	} elsif (int($sld_true_pos) == 11) {
 	    Yirl::ywReplaceEntry2(
 		$cur_cnt,
 		Yirl::yaeString("rgba: 155 255 155 255",
@@ -38,7 +38,7 @@ sub enter_action
 				"background"),
 		1);
 
-	} elsif (int($sld_true_pos) == 7) {
+	} elsif (int($sld_true_pos) == 14) {
 	    Yirl::ywReplaceEntry2(
 		$cur_cnt,
 		Yirl::yaeString("rgba: 155 155 155 255",
@@ -133,8 +133,8 @@ sub widget_init
     Yirl::yeCreateInt(1, $wid, "current");
     Yirl::yePushBack($wid, $map_dialogue, "=map=dia");
     Yirl::yePushBack($wid, $basement_dialogue, "=bas=dia");
-    #Yirl::yePushBack($entries, $door_dialogue);
-    Yirl::yePushBack($entries, $map_dialogue);
+    Yirl::yePushBack($entries, $door_dialogue);
+    #Yirl::yePushBack($entries, $map_dialogue);
     Yirl::yeCreateString("text-screen", $txt_img, "<type>");
     Yirl::yaeString(
 	"rgba: 0 0 0 200",

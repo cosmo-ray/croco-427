@@ -1,7 +1,5 @@
-print "sprites: \n";
 do "./sprites.pl";
 
-print "done\n";
 $door_dialogue = Yirl::yeCreateArray();
 Yirl::yeCreateString("rgba: 255 255 255 255", $door_dialogue, "background");
 Yirl::yeCreateString("dialogue", $door_dialogue, "<type>");
@@ -41,5 +39,5 @@ Yirl::yeCreateString("The door seems broken", $new_txt);
 $answer = Yirl::yeCreateArray($answers);
 Yirl::yeCreateString("Go to the elevator", $answer, "text");
 $new_txt = Yirl::yeCreateArray($answer, "action");
-Yirl::yeCreateString("Dialogue.change-text", $new_txt);
-Yirl::yeCreateString("TODO", $new_txt);
+Yirl::yeCreateString("croco-427.goto_basement", $new_txt);
+#Yirl::yeCreateString("TODO", $new_txt);

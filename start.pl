@@ -84,6 +84,17 @@ sub console_action
     return 1;
 }
 
+sub goto_basement
+{
+    Yirl::yePrint($basement_dialogue);
+    print "=================================\n";
+    $basement_wid = Yirl::yeCreateArray();
+    Yirl::yePushBack($basement_wid, $basement_dialogue, "dialogue");
+    Yirl::yeCreateString("dialogue", $basement_wid, "<type>");
+    Yirl::yeCreateInt(20, $basement_wid, "txt-size");
+    Yirl::ywReplaceEntry2($cur_cnt, $basement_wid, 1);
+}
+
 sub do_console
 {
     $wid = $_[0];
@@ -117,8 +128,11 @@ sub widget_init
     $txt_img = Yirl::yeCreateArray($entries);
     $cur_cnt = $wid;
     $cur_txt_img = $txt_img;
+    $basement_dialogue = Yirl::ygFileToEnt(0, "./basement-dialoue.json");
+    Yirl::yePrint($basement_dialogue);
     Yirl::yeCreateInt(1, $wid, "current");
     Yirl::yePushBack($wid, $map_dialogue, "=map=dia");
+    Yirl::yePushBack($wid, $basement_dialogue, "=bas=dia");
     #Yirl::yePushBack($entries, $door_dialogue);
     Yirl::yePushBack($entries, $map_dialogue);
     Yirl::yeCreateString("text-screen", $txt_img, "<type>");
@@ -152,6 +166,7 @@ sub mod_init
     Yirl::yeCreateString("module", $pls, "type");
 
     Yirl::yeCreateFunction("do_console", $mod, "do_console");
+    Yirl::yeCreateFunction("goto_basement", $mod, "goto_basement");
 
     $input = Yirl::yaeString(
 	"text-input",

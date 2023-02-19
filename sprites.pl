@@ -1,4 +1,3 @@
-print "wesh\n";
 
 $door = <<EOC;
  /-------------------------------------------------------------\\
@@ -280,7 +279,5 @@ $door_open_anim = <<EOC;
 @: you are here
 
 EOC
-
-print $door_open_anim;
 
 @door_open = split "==\n", $door_open_anim;

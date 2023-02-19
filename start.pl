@@ -14,10 +14,6 @@ my $time_acc;
 
 sub enter_action
 {
-    if ($time_acc eq 0) {
-	$time_acc = 1;
-	return
-    }
     my $SLIDE_L = 1000000;
     $next_acc = $time_acc + Yirl::ywidGetTurnTimer();
     $sld_pos = $time_acc / $SLIDE_L;
@@ -39,6 +35,14 @@ sub enter_action
 		$cur_cnt,
 		Yirl::yaeString("rgba: 155 255 155 255",
 				Yirl::ywTextScreenNew("Akira: look, a map"),
+				"background"),
+		1);
+
+	} elsif (int($sld_true_pos) == 7) {
+	    Yirl::ywReplaceEntry2(
+		$cur_cnt,
+		Yirl::yaeString("rgba: 155 155 155 255",
+				Yirl::ywTextScreenNew("going to the map..."),
 				"background"),
 		1);
 	} elsif (int($sld_true_pos) == $nb_slide - 1) {
@@ -93,7 +97,7 @@ sub do_console
 	    Yirl::yaeString(
 		"nextOnKeyDown",
 		Yirl::yaeString(
-		    "rgba: 155 155 155 255",
+		    "rgba: 155 255 155 255",
 		    Yirl::ywTextScreenNew("What is this machinery ?"),
 		    "background"),
 		"action"),
@@ -115,7 +119,8 @@ sub widget_init
     $cur_txt_img = $txt_img;
     Yirl::yeCreateInt(1, $wid, "current");
     Yirl::yePushBack($wid, $map_dialogue, "=map=dia");
-    Yirl::yePushBack($entries, $door_dialogue);
+    #Yirl::yePushBack($entries, $door_dialogue);
+    Yirl::yePushBack($entries, $map_dialogue);
     Yirl::yeCreateString("text-screen", $txt_img, "<type>");
     Yirl::yaeString(
 	"rgba: 0 0 0 200",
@@ -153,6 +158,7 @@ sub mod_init
 	Yirl::yeCreateArray($mod, "console-text-input"),
 	"<type>"
 	);
+    Yirl::yaeInt(4, Yirl::yeCreateArray($input, "margin"), "size"),
     Yirl::yeCreateFunction("console_action", $input, "on-enter");
     Yirl::ygInitWidgetModule($mod, "croco-427", $callback);
     #need a destroy callback that rest that.

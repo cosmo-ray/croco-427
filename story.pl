@@ -29,17 +29,17 @@ Yirl::yeCreateString("dialogue", $map_dialogue, "<type>");
 Yirl::yeCreateInt(20, $map_dialogue, "txt-size");
 Yirl::yeCreateInt(1, $map_dialogue, "is_looner_dialogue");
 $map_dialogue_2 = Yirl::yeCreateArray($map_dialogue, "dialogue");
-Yirl::yeCreateString("what to do", $map_dialogue_2, "text");
+Yirl::yeCreateString("Akira: where should we go ?", $map_dialogue_2, "text");
 $answers = Yirl::yeCreateArray($map_dialogue_2, "answers");
 
 $answer = Yirl::yeCreateArray($answers);
-Yirl::yeCreateString("Go to the console", $answer, "text");
-$new_txt = Yirl::yeCreateArray($answer, "action");
-Yirl::yeCreateString("croco-427.do_console", $new_txt);
-Yirl::yeCreateInt(10, $new_txt);
-
-$answer = Yirl::yeCreateArray($answers);
-Yirl::yeCreateString("Look at the door", $answer, "text");
+Yirl::yeCreateString("let's look at the Small room on the right", $answer, "text");
 $new_txt = Yirl::yeCreateArray($answer, "action");
 Yirl::yeCreateString("Dialogue.change-text", $new_txt);
-Yirl::yeCreateString("The door look doorestque", $new_txt);
+Yirl::yeCreateString("The door seems broken", $new_txt);
+
+$answer = Yirl::yeCreateArray($answers);
+Yirl::yeCreateString("Go to the elevator", $answer, "text");
+$new_txt = Yirl::yeCreateArray($answer, "action");
+Yirl::yeCreateString("Dialogue.change-text", $new_txt);
+Yirl::yeCreateString("TODO", $new_txt);

@@ -42,9 +42,6 @@ sub enter_action
 				"background"),
 		1);
 	} elsif (int($sld_true_pos) == $nb_slide - 1) {
-	    print("BEGIN YOOOOOOO ? \n");
-	    Yirl::yePrint($map_dialogue);
-	    print("END YOOOOOOO ? \n");
 	    Yirl::ywReplaceEntry2($cur_cnt, $map_dialogue, 1);
 	    Yirl::yeRemoveChildByStr($cur_cnt, "action");
 	}
@@ -117,6 +114,7 @@ sub widget_init
     $cur_cnt = $wid;
     $cur_txt_img = $txt_img;
     Yirl::yeCreateInt(1, $wid, "current");
+    Yirl::yePushBack($wid, $map_dialogue, "=map=dia");
     Yirl::yePushBack($entries, $door_dialogue);
     Yirl::yeCreateString("text-screen", $txt_img, "<type>");
     Yirl::yaeString(

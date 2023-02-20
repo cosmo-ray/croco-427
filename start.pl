@@ -92,6 +92,7 @@ sub goto_basement
     Yirl::yePushBack($basement_wid, $basement_dialogue, "dialogue");
     Yirl::yeCreateString("dialogue", $basement_wid, "<type>");
     Yirl::yeCreateInt(20, $basement_wid, "txt-size");
+    Yirl::yeReCreateString($lab_map, $cur_txt_img, "text");
     Yirl::ywReplaceEntry2($cur_cnt, $basement_wid, 1);
 }
 

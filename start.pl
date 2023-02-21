@@ -151,13 +151,17 @@ sub widget_init
     #Yirl::yePrint($wid);
     $pc = Yirl::yeGet($wid, "pc");
     if (!$pc) {
-	$pc = yaeInt(0, yaeInt(10, Yirl::yeCreateArray($wid, "pc"), "life"), "xp");
+	$pc = Yirl::yaeInt(
+	    0, Yirl::yaeInt(
+		10, Yirl::yeCreateArray($wid, "pc"),
+		"life"),
+	    "xp");
 
 	my $stats = Yirl::yeCreateArray($pc, "stats");
-	yeCreateInt(0, $stats, "charm");
-	yeCreateInt(4, $stats, "smart");
-	yeCreateInt(4, $stats, "agility");
-	yeCreateInt(4, $stats, "strength");
+	Yirl::yeCreateInt(0, $stats, "charm");
+	Yirl::yeCreateInt(4, $stats, "smart");
+	Yirl::yeCreateInt(4, $stats, "agility");
+	Yirl::yeCreateInt(4, $stats, "strength");
 	print("NEED NEW PC\n");
     }
 

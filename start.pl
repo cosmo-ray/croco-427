@@ -12,6 +12,8 @@ my $cur_cnt;
 my $original_time;
 my $time_acc;
 
+my $pc;
+
 sub enter_action
 {
     my $SLIDE_L = 550000;
@@ -147,6 +149,18 @@ sub widget_init
     Yirl::yeCreateInt(70, $txt_img, "size");
     #Yirl::yePrint($wid);
     #Yirl::yePrint($wid);
+    $pc = Yirl::yeGet($wid, "pc");
+    if (!$pc) {
+	$pc = yaeInt(0, yaeInt(10, Yirl::yeCreateArray($wid, "pc"), "life"), "xp");
+
+	my $stats = Yirl::yeCreateArray($pc, "stats");
+	yeCreateInt(0, $stats, "charm");
+	yeCreateInt(4, $stats, "smart");
+	yeCreateInt(4, $stats, "agility");
+	yeCreateInt(4, $stats, "strength");
+	print("NEED NEW PC\n");
+    }
+
     $ret = Yirl::ywidNewWidget($wid, "container");
     #Yirl::yePrint($wid);
     return $ret;

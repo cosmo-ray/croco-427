@@ -32,14 +32,16 @@ sub lab
     Yirl::ywMenuPushEntry($fight_menu, "attack");
     Yirl::ywReplaceEntry2($cur_cnt, $fight_menu, 1);
     $enemy = Yirl::yeReCreateArray($cur_cnt, "enemy");
-    my $ehp = 9 + rand(9);
+    my $ehp = 9 + rand(10);
     Yirl::yeCreateInt($ehp, $enemy, "life");
-    my $estr = 1 + rand(4);
-    Yirl::yaeInt($estr, Yirl::yeCreateArray($enemy), "strength");
+    my $estr = 1 + rand(5);
+    Yirl::yaeInt(1 + rand(2),
+		 Yirl::yaeInt($estr, Yirl::yeCreateArray($enemy), "strength"),
+		 "agility");
 
-    if ($ehp > 13 && $estr > 3) {
+    if ($ehp > 14 && $estr > 3) {
 	Yirl::yeReCreateString($monster_geko, $cur_txt_img, "text");
-    } elsif ($ehp > 13) {
+    } elsif ($ehp > 14) {
 	Yirl::yeReCreateString($fat_geko, $cur_txt_img, "text");
     } elsif ($estr > 3) {
 	Yirl::yeReCreateString($str_geko, $cur_txt_img, "text");
@@ -192,8 +194,10 @@ sub widget_init
     if (!$pc) {
 	$pc = Yirl::yaeInt(
 	    0, Yirl::yaeInt(
-		10, Yirl::yeCreateArray($wid, "pc"),
-		"life"),
+		13, Yirl::yaeInt(
+		    13, Yirl::yeCreateArray($wid, "pc"),
+		    "life"),
+		"max_life"),
 	    "xp");
 
 	my $stats = Yirl::yeCreateArray($pc, "stats");
@@ -201,6 +205,7 @@ sub widget_init
 	Yirl::yeCreateInt(4, $stats, "smart");
 	Yirl::yeCreateInt(4, $stats, "agility");
 	Yirl::yeCreateInt(4, $stats, "strength");
+	Yirl::yePrint($pc);
 	print("NEED NEW PC\n");
     }
 

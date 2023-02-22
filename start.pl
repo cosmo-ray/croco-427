@@ -31,6 +31,8 @@ sub lab
 
     Yirl::ywMenuPushEntry($fight_menu, "attack");
     Yirl::ywReplaceEntry2($cur_cnt, $fight_menu, 1);
+    $enemy_timer = Yirl::yeReCreateInt(0, $cur_cnt, "enemytime");
+    $pc_timer = Yirl::yeReCreateInt(0, $cur_cnt, "pctimer");
     $enemy = Yirl::yeReCreateArray($cur_cnt, "enemy");
     my $ehp = 9 + rand(10);
     Yirl::yeCreateInt($ehp, $enemy, "life");
@@ -49,8 +51,19 @@ sub lab
 	Yirl::yeReCreateString($geko, $cur_txt_img, "text");
     }
 
+    Yirl::ywSetTurnLengthOverwrite(200000);
+    Yirl::yeCreateFunction("fight_action", $cur_cnt, "action");
     print "--lab--\n";
     Yirl::yePrint($enemy);
+}
+
+sub fight_action
+{
+    print("we are fighting dreamer\n");
+    Yirl::yeAddInt($pc_timer, 4);
+    Yirl::yeAddInt($enemy_timer, 2);
+    Yirl::yePrint($pc_timer);
+    Yirl::yePrint($enemy_timer);
 }
 
 sub enter_action
@@ -238,6 +251,7 @@ sub mod_init
 	);
     Yirl::yaeInt(4, Yirl::yeCreateArray($input, "margin"), "size"),
     Yirl::yeCreateFunction("console_action", $input, "on-enter");
+    Yirl::yeCreateFunction("fight_action", $input, "fight_action");
     Yirl::ygInitWidgetModule($mod, "croco-427", $callback);
     #need a destroy callback that rest that.
     $original_time = Yirl::ywGetTurnLengthOverwrite();

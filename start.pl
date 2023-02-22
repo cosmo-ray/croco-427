@@ -13,6 +13,7 @@ my $original_time;
 my $time_acc;
 
 my $pc;
+my $enemy;
 
 sub lab
 {
@@ -28,10 +29,26 @@ sub lab
 	    "background"),
 	"pre-text");
 
-    Yirl::yeReCreateString(@geko, $cur_txt_img, "text");
     Yirl::ywMenuPushEntry($fight_menu, "attack");
     Yirl::ywReplaceEntry2($cur_cnt, $fight_menu, 1);
+    $enemy = Yirl::yeReCreateArray($cur_cnt, "enemy");
+    my $ehp = 9 + rand(9);
+    Yirl::yeCreateInt($ehp, $enemy, "life");
+    my $estr = 1 + rand(4);
+    Yirl::yaeInt($estr, Yirl::yeCreateArray($enemy), "strength");
+
+    if ($ehp > 13 && $estr > 3) {
+	Yirl::yeReCreateString($monster_geko, $cur_txt_img, "text");
+    } elsif ($ehp > 13) {
+	Yirl::yeReCreateString($fat_geko, $cur_txt_img, "text");
+    } elsif ($estr > 3) {
+	Yirl::yeReCreateString($str_geko, $cur_txt_img, "text");
+    } else {
+	Yirl::yeReCreateString($geko, $cur_txt_img, "text");
+    }
+
     print "--lab--\n";
+    Yirl::yePrint($enemy);
 }
 
 sub enter_action

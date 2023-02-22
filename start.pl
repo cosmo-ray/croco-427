@@ -20,6 +20,16 @@ sub lab
 
     print "--lab--\n";
     Yirl::yePrint($whichlab);
+    my $fight_menu = Yirl::yaeString(
+	"hp: ##########",
+	Yirl::yaeString(
+	    "rgba: 155 255 155 255",
+	    Yirl::yaeString("menu", Yirl::yeCreateArray(), "<type>"),
+	    "background"),
+	"pre-text");
+
+    Yirl::ywMenuPushEntry($fight_menu, "attack");
+    Yirl::ywReplaceEntry2($cur_cnt, $fight_menu, 1);
     print "--lab--\n";
 }
 
@@ -145,8 +155,8 @@ sub widget_init
     Yirl::yeCreateInt(1, $wid, "current");
     Yirl::yePushBack($wid, $map_dialogue, "=map=dia");
     Yirl::yePushBack($wid, $basement_dialogue, "=bas=dia");
-    Yirl::yePushBack($entries, $door_dialogue);
-    #Yirl::yePushBack($entries, $map_dialogue);
+    #Yirl::yePushBack($entries, $door_dialogue);
+    Yirl::yePushBack($entries, $map_dialogue);
     Yirl::yeCreateString("text-screen", $txt_img, "<type>");
     Yirl::yaeString(
 	"rgba: 0 0 0 200",
@@ -156,8 +166,6 @@ sub widget_init
     Yirl::yeCreateString("rgba: 255 255 255 255", $wid, "background");
     Yirl::yeCreateString("horizontal", $wid, "cnt-type");
     Yirl::yeCreateInt(70, $txt_img, "size");
-    #Yirl::yePrint($wid);
-    #Yirl::yePrint($wid);
     $pc = Yirl::yeGet($wid, "pc");
     if (!$pc) {
 	$pc = Yirl::yaeInt(
@@ -175,7 +183,6 @@ sub widget_init
     }
 
     $ret = Yirl::ywidNewWidget($wid, "container");
-    #Yirl::yePrint($wid);
     return $ret;
 }
 

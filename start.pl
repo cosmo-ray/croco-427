@@ -28,7 +28,7 @@ sub lab
 	    "background"),
 	"pre-text");
 
-    Yirl::yeReCreateString($geko, $cur_txt_img, "text");
+    Yirl::yeReCreateString(@geko, $cur_txt_img, "text");
     Yirl::ywMenuPushEntry($fight_menu, "attack");
     Yirl::ywReplaceEntry2($cur_cnt, $fight_menu, 1);
     print "--lab--\n";

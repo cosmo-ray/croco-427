@@ -28,6 +28,7 @@ sub lab
 	    "background"),
 	"pre-text");
 
+    Yirl::yeReCreateString($geko, $cur_txt_img, "text");
     Yirl::ywMenuPushEntry($fight_menu, "attack");
     Yirl::ywReplaceEntry2($cur_cnt, $fight_menu, 1);
     print "--lab--\n";
@@ -162,6 +163,10 @@ sub widget_init
 	"rgba: 0 0 0 200",
 	Yirl::yaeInt(4, Yirl::yeCreateArray($txt_img, "margin"), "size"),
 	"color");
+
+    # to remove
+    goto_basement
+
     Yirl::yeCreateString($door, $txt_img, "text");
     Yirl::yeCreateString("rgba: 255 255 255 255", $wid, "background");
     Yirl::yeCreateString("horizontal", $wid, "cnt-type");

@@ -14,6 +14,15 @@ my $time_acc;
 
 my $pc;
 
+sub lab
+{
+    my $whichlab = $_[2];
+
+    print "--lab--\n";
+    Yirl::yePrint($whichlab);
+    print "--lab--\n";
+}
+
 sub enter_action
 {
     my $SLIDE_L = 550000;
@@ -184,6 +193,7 @@ sub mod_init
     Yirl::yeCreateString("YIRL_MODULES_PATH/TextInput/", $pls, "path");
     Yirl::yeCreateString("module", $pls, "type");
 
+    Yirl::yeCreateFunction("lab", $mod, "lab");
     Yirl::yeCreateFunction("do_console", $mod, "do_console");
     Yirl::yeCreateFunction("goto_basement", $mod, "goto_basement");
 

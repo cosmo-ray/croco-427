@@ -15,13 +15,16 @@ my $time_acc;
 my $pc;
 my $enemy;
 
+my $fight_menu;
+
 sub lab
 {
     my $whichlab = $_[2];
 
     print "--lab--\n";
     Yirl::yePrint($whichlab);
-    my $fight_menu = Yirl::yaeString(
+
+    $fight_menu = Yirl::yaeString(
 	"hp: ##########",
 	Yirl::yaeString(
 	    "rgba: 155 255 155 255",
@@ -30,7 +33,7 @@ sub lab
 	"pre-text");
 
     Yirl::ywMenuPushEntry($fight_menu, "attack");
-    Yirl::ywReplaceEntry2($cur_cnt, $fight_menu, 1);
+    Yirl::yePushBack($cur_cnt, $fight_menu,  "__fightmenu");
     $enemy_timer = Yirl::yeReCreateInt(0, $cur_cnt, "enemytime");
     $pc_timer = Yirl::yeReCreateInt(0, $cur_cnt, "pctimer");
     $enemy = Yirl::yeReCreateArray($cur_cnt, "enemy");
@@ -64,6 +67,27 @@ sub fight_action
     Yirl::yeAddInt($enemy_timer, 2);
     Yirl::yePrint($pc_timer);
     Yirl::yePrint($enemy_timer);
+    my $pct = Yirl::yeGetInt($pc_timer);
+    if ($pct < 100) {
+	my $str - "Getting ready to attack\n";
+
+	for (my $i = 0; $i <= 100; $i += 5) {
+	    if ($i < $pct) {
+		$str = $str . '#';
+	    } else {
+		$str = $str . '-';
+	    }
+	}
+	Yirl::ywReplaceEntry2(
+	    $cur_cnt,
+	    Yirl::yaeString("rgba: 255 155 155 255",
+			    Yirl::ywTextScreenNew($str),
+			    "background"),
+	    1);
+    } else {
+	Yirl::ywReplaceEntry2($cur_cnt, $fight_menu, 1);
+    }
+    print("pct: ", $pct, "\n");
 }
 
 sub enter_action

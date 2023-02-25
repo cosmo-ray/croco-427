@@ -17,6 +17,30 @@ my $enemy;
 
 my $fight_menu;
 
+sub make_pj_info
+{
+    my $ret = "HP: " . Yirl::yeGetInt(Yirl::yeGet($pc, "life")) . "\n";
+
+    return $ret;
+}
+
+sub attack
+{
+    my $atk = Yirl::yeGetIntAt(Yirl::yeGet($pc, "stats"), "strength");
+    my $life = Yirl::yeGet($enemy, "life");
+
+    Yirl::yeAddInt($life, -$atk);
+    Yirl::yePrint($life);
+    print("Yirl::yeIntInfTo(\$life, 0): ", Yirl::yeIntInfTo($life, 0), "\n");
+    if (Yirl::yeIntInfTo($life, 0)) {
+	goto_basement();
+    } else {
+	Yirl::ywSetTurnLengthOverwrite(200000);
+	Yirl::yeCreateFunction("fight_action", $cur_cnt, "action");
+	Yirl::yeSetInt($pc_timer, 0);
+    }
+}
+
 sub lab
 {
     my $whichlab = $_[2];
@@ -25,14 +49,15 @@ sub lab
     Yirl::yePrint($whichlab);
 
     $fight_menu = Yirl::yaeString(
-	"hp: ##########",
+	make_pj_info(),
 	Yirl::yaeString(
 	    "rgba: 155 255 155 255",
 	    Yirl::yaeString("menu", Yirl::yeCreateArray(), "<type>"),
 	    "background"),
 	"pre-text");
 
-    Yirl::ywMenuPushEntry($fight_menu, "attack");
+    Yirl::ywMenuPushEntry($fight_menu, "attack", Yirl::ygGet("croco-427.attack"));
+    Yirl::ywMenuPushEntry($fight_menu, "use item");
     Yirl::yePushBack($cur_cnt, $fight_menu,  "__fightmenu");
     $enemy_timer = Yirl::yeReCreateInt(0, $cur_cnt, "enemytime");
     $pc_timer = Yirl::yeReCreateInt(0, $cur_cnt, "pctimer");
@@ -69,7 +94,7 @@ sub fight_action
     Yirl::yePrint($enemy_timer);
     my $pct = Yirl::yeGetInt($pc_timer);
     if ($pct < 100) {
-	my $str - "Getting ready to attack\n";
+	my $str = make_pj_info() . "Getting ready to attack\n";
 
 	for (my $i = 0; $i <= 100; $i += 5) {
 	    if ($i < $pct) {
@@ -86,8 +111,11 @@ sub fight_action
 	    1);
     } else {
 	Yirl::ywReplaceEntry2($cur_cnt, $fight_menu, 1);
+	Yirl::ywSetTurnLengthOverwrite(0);
+	Yirl::yeRemoveChildByStr($cur_cnt, "action");
     }
     print("pct: ", $pct, "\n");
+    return 0
 }
 
 sub enter_action
@@ -267,6 +295,7 @@ sub mod_init
     Yirl::yeCreateFunction("lab", $mod, "lab");
     Yirl::yeCreateFunction("do_console", $mod, "do_console");
     Yirl::yeCreateFunction("goto_basement", $mod, "goto_basement");
+    Yirl::yeCreateFunction("attack", $mod, "attack");
 
     $input = Yirl::yaeString(
 	"text-input",
@@ -275,7 +304,6 @@ sub mod_init
 	);
     Yirl::yaeInt(4, Yirl::yeCreateArray($input, "margin"), "size"),
     Yirl::yeCreateFunction("console_action", $input, "on-enter");
-    Yirl::yeCreateFunction("fight_action", $input, "fight_action");
     Yirl::ygInitWidgetModule($mod, "croco-427", $callback);
     #need a destroy callback that rest that.
     $original_time = Yirl::ywGetTurnLengthOverwrite();

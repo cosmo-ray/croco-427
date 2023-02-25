@@ -17,6 +17,8 @@ my $enemy;
 
 my $fight_menu;
 
+my $cur_geko;
+
 sub make_pj_info
 {
     my $ret = "HP: " . Yirl::yeGetInt(Yirl::yeGet($pc, "life")) . "\n";
@@ -35,6 +37,16 @@ sub attack
     if (Yirl::yeIntInfTo($life, 0)) {
 	goto_basement();
     } else {
+	my $color_yellow="\033[33m";
+	my $color_red="\033[31m";
+	my $color_none="\033[0m";
+
+	if (Yirl::yeIntInfTo($life, 4)) {
+	    Yirl::yeReCreateString($color_red.$cur_geko, $cur_txt_img, "text");
+	} elsif (Yirl::yeIntInfTo($life, 7)) {
+	    Yirl::yeReCreateString($color_yellow.$cur_geko, $cur_txt_img, "text");
+	    print($color_yellow.$cur_geko.$color_none);
+	}
 	Yirl::ywSetTurnLengthOverwrite(200000);
 	Yirl::yeCreateFunction("fight_action", $cur_cnt, "action");
 	Yirl::yeSetInt($pc_timer, 0);
@@ -70,14 +82,15 @@ sub lab
 		 "agility");
 
     if ($ehp > 14 && $estr > 3) {
-	Yirl::yeReCreateString($monster_geko, $cur_txt_img, "text");
+	$cur_geko = $monster_geko;
     } elsif ($ehp > 14) {
-	Yirl::yeReCreateString($fat_geko, $cur_txt_img, "text");
+	$cur_geko = $fat_geko;
     } elsif ($estr > 3) {
-	Yirl::yeReCreateString($str_geko, $cur_txt_img, "text");
+	$cur_geko = $str_geko;
     } else {
-	Yirl::yeReCreateString($geko, $cur_txt_img, "text");
+	$cur_geko = $geko;
     }
+    Yirl::yeReCreateString($cur_geko, $cur_txt_img, "text");
 
     Yirl::ywSetTurnLengthOverwrite(200000);
     Yirl::yeCreateFunction("fight_action", $cur_cnt, "action");
@@ -240,8 +253,8 @@ sub widget_init
     Yirl::yeCreateInt(1, $wid, "current");
     Yirl::yePushBack($wid, $map_dialogue, "=map=dia");
     Yirl::yePushBack($wid, $basement_dialogue, "=bas=dia");
-    #Yirl::yePushBack($entries, $door_dialogue);
-    Yirl::yePushBack($entries, $map_dialogue);
+    Yirl::yePushBack($entries, $door_dialogue);
+    #Yirl::yePushBack($entries, $map_dialogue);
     Yirl::yeCreateString("text-screen", $txt_img, "<type>");
     Yirl::yaeString(
 	"rgba: 0 0 0 200",

@@ -68,7 +68,7 @@ $fat_geko = <<EOC;
             _C _C _C
     O    __/__/__/_
    /    /          \\_
-  C====<            _:>
+  C====< < < < < <  _:>
    \\    \\__________/
    O      \\_C \\_C
 
@@ -90,7 +90,7 @@ $monster_geko = <<EOC;
            /  /  /
     O    _()_()_()_
    /    /          \\_
-  C====<            _:>
+  C====< < < < < <  _:>
    \\    \\__________/
    O        ()  ()
              \\   \\--C
@@ -535,13 +535,13 @@ $door_open_anim = <<EOC;
 
 EOC
 
-$color_yellow="\033[33m";
-$color_none="\033[0m";
-
 #my $colored_door_anim = $door_open_anim =~ s/\/\|\\/$color_yellow\/|\\$color_none/gr;
 
 
 @door_open = split "==\n", $door_open_anim;
+
+$color_yellow="\033[33m";
+$color_none="\033[0m";
 
 foreach (@door_open) {
     print $_, "\n";

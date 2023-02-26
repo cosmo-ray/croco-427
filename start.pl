@@ -49,9 +49,13 @@ sub attack
     my $life = Yirl::yeGet($enemy, "life");
 
     Yirl::yeAddInt($life, -$atk);
-    Yirl::yePrint($life);
-    print("Yirl::yeIntInfTo(\$life, 0): ", Yirl::yeIntInfTo($life, 0), "\n");
+
     if (Yirl::yeIntInfTo($life, 0)) {
+	my $xp = Yirl::yeGet($pc, "xp");
+	my $tot_xp = Yirl::yeGet($cur_cnt, "totxp");
+
+	Yirl::yeAddInt($tot_xp, 3);
+	Yirl::yeAddInt($xp, 3);
 	goto_basement();
     } else {
 	show_cur_geko($life);
@@ -288,6 +292,7 @@ sub widget_init
     $cur_txt_img = $txt_img;
     $basement_dialogue = Yirl::ygFileToEnt(0, "./basement-dialoue.json");
     Yirl::yePrint($basement_dialogue);
+    Yirl::yeCreateInt(0, $wid, "totxp"); # total xp win
     Yirl::yeCreateInt(1, $wid, "current");
     Yirl::yePushBack($wid, $map_dialogue, "=map=dia");
     Yirl::yePushBack($wid, $basement_dialogue, "=bas=dia");

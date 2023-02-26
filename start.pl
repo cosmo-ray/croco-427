@@ -114,11 +114,20 @@ sub enemy_atk
 {
     Yirl::yeAddInt($enemy_timer, 1);
     print "enemy_atk\n";
-    if (Yirl::yeIntSupTo($enemy_timer, 110)) {
+    if (Yirl::yeIntSupTo($enemy_timer, 108)) {
 	Yirl::yeCreateFunction("fight_action", $cur_cnt, "action");
 	Yirl::yeRemoveChildByStr($cur_cnt, "action");
 	show_cur_geko Yirl::yeGet($enemy, "life");
 	Yirl::yeSetInt($enemy_timer, 0);
+	my $life = Yirl::yeGet($pc, "life");
+	if (Yirl::yeIntInfTo($life, 1)) {
+	    print("YOU LOSE !!!!!!\n");
+	    if (Yirl::yeGet($cur_cnt, "die")) {
+                Yirl::yesCall(Yirl::yeGet($cur_cnt, "die"), $cur_cnt);
+            } else {
+                Yirl::yesCall(Yirl::ygGet('FinishGame'));
+	    }
+	}
     }
 }
 
@@ -220,10 +229,8 @@ sub console_action
     my $txt = Yirl::yeGetString($_[1]);
     my $container = $_[2];
 
-    #Yirl::yePrint($input_wid);
-    #print($txt . "\n");
     Yirl::yesCall(Yirl::ygGet("text_input_reset"), $input_wid);
-    print "-----\n";
+
     if (uc($txt) eq "HELP") {
 	Yirl::yeReCreateString($console_help, $cur_txt_img, "text");
     } elsif (uc($txt) eq "DRAW") {
@@ -247,8 +254,6 @@ sub console_action
 
 sub goto_basement
 {
-    Yirl::yePrint($basement_dialogue);
-    print "=================================\n";
     $basement_wid = Yirl::yeCreateArray();
     Yirl::yePushBack($basement_wid, $basement_dialogue, "dialogue");
     Yirl::yeCreateString("dialogue", $basement_wid, "<type>");
@@ -262,7 +267,6 @@ sub do_console
     $wid = $_[0];
 
     Yirl::yeReCreateString($console, $cur_txt_img, "text");
-    print("-------------------===========-----------------------\n");
     Yirl::ywReplaceEntry2(
 	$cur_cnt,
 	Yirl::yaeString(

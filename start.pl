@@ -26,6 +26,23 @@ sub make_pj_info
     return $ret;
 }
 
+sub show_cur_geko
+{
+    $life = $_[0];
+
+    my $color_yellow="\033[33m";
+    my $color_red="\033[31m";
+    my $color_none="\033[0m";
+
+    if (Yirl::yeIntInfTo($life, 4)) {
+	Yirl::yeReCreateString($color_red.$cur_geko, $cur_txt_img, "text");
+    } elsif (Yirl::yeIntInfTo($life, 7)) {
+	Yirl::yeReCreateString($color_yellow.$cur_geko, $cur_txt_img, "text");
+    } else {
+	Yirl::yeReCreateString($cur_geko, $cur_txt_img, "text");
+    }
+}
+
 sub attack
 {
     my $atk = Yirl::yeGetIntAt(Yirl::yeGet($pc, "stats"), "strength");
@@ -37,16 +54,7 @@ sub attack
     if (Yirl::yeIntInfTo($life, 0)) {
 	goto_basement();
     } else {
-	my $color_yellow="\033[33m";
-	my $color_red="\033[31m";
-	my $color_none="\033[0m";
-
-	if (Yirl::yeIntInfTo($life, 4)) {
-	    Yirl::yeReCreateString($color_red.$cur_geko, $cur_txt_img, "text");
-	} elsif (Yirl::yeIntInfTo($life, 7)) {
-	    Yirl::yeReCreateString($color_yellow.$cur_geko, $cur_txt_img, "text");
-	    print($color_yellow.$cur_geko.$color_none);
-	}
+	show_cur_geko($life);
 	Yirl::ywSetTurnLengthOverwrite(200000);
 	Yirl::yeCreateFunction("fight_action", $cur_cnt, "action");
 	Yirl::yeSetInt($pc_timer, 0);
@@ -78,7 +86,7 @@ sub lab
     Yirl::yeCreateInt($ehp, $enemy, "life");
     my $estr = 1 + rand(5);
     Yirl::yaeInt(1 + rand(2),
-		 Yirl::yaeInt($estr, Yirl::yeCreateArray($enemy), "strength"),
+		 Yirl::yaeInt($estr, Yirl::yeCreateArray($enemy, "stats"), "strength"),
 		 "agility");
 
     if ($ehp > 14 && $estr > 3) {
@@ -98,6 +106,18 @@ sub lab
     Yirl::yePrint($enemy);
 }
 
+sub enemy_atk
+{
+    Yirl::yeAddInt($enemy_timer, 1);
+    print "enemy_atk\n";
+    if (Yirl::yeIntSupTo($enemy_timer, 110)) {
+	Yirl::yeCreateFunction("fight_action", $cur_cnt, "action");
+	Yirl::yeRemoveChildByStr($cur_cnt, "action");
+	show_cur_geko Yirl::yeGet($enemy, "life");
+	Yirl::yeSetInt($enemy_timer, 0);
+    }
+}
+
 sub fight_action
 {
     print("we are fighting dreamer\n");
@@ -105,6 +125,7 @@ sub fight_action
     Yirl::yeAddInt($enemy_timer, 2);
     Yirl::yePrint($pc_timer);
     Yirl::yePrint($enemy_timer);
+    my $enemyt = Yirl::yeGetInt($enemy_timer);
     my $pct = Yirl::yeGetInt($pc_timer);
     if ($pct < 100) {
 	my $str = make_pj_info() . "Getting ready to attack\n";
@@ -126,6 +147,23 @@ sub fight_action
 	Yirl::ywReplaceEntry2($cur_cnt, $fight_menu, 1);
 	Yirl::ywSetTurnLengthOverwrite(0);
 	Yirl::yeRemoveChildByStr($cur_cnt, "action");
+	return 0;
+    }
+    if ($enemyt > 99) {
+	my $color_red="\033[31m";
+	Yirl::yeReCreateString($color_red.$scratch, $cur_txt_img, "text");
+	Yirl::yeRemoveChildByStr($cur_cnt, "action");
+	Yirl::yeCreateFunction("enemy_atk", $cur_cnt, "action");
+	my $atk = Yirl::yeGetIntAt(Yirl::yeGet($enemy, "stats"), "strength");
+	my $life = Yirl::yeGet($pc, "life");
+
+	Yirl::yeAddInt($life, -$atk);
+	Yirl::ywReplaceEntry2(
+	    $cur_cnt,
+	    Yirl::yaeString("rgba: 255 155 155 255",
+			    Yirl::ywTextScreenNew(Yirl::yeGetString(Yirl::yeGet($pc, "name")). " got domages for ". $atk),
+			    "background"),
+	    1);
     }
     print("pct: ", $pct, "\n");
     return 0
@@ -278,6 +316,7 @@ sub widget_init
 		"max_life"),
 	    "xp");
 
+	Yirl::yeCreateString("Ji", $pc, "name");
 	my $stats = Yirl::yeCreateArray($pc, "stats");
 	Yirl::yeCreateInt(0, $stats, "charm");
 	Yirl::yeCreateInt(4, $stats, "smart");

@@ -53,6 +53,23 @@ EOC
 
 @croco = split "==\n", $the_croco;
 
+
+$scratch = <<EOC;
+
+
+           /          _/
+           |         _/
+           |        _/
+          /       _/
+         |      _/
+        /     _/
+       |    _/   SCRATCH !
+      /   _/
+     |  _/
+    / _/
+    |/
+EOC
+
 $geko = <<EOC;
 
     O       _C _C _C

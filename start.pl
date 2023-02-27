@@ -278,13 +278,16 @@ sub look_entrance
     if ($sld_true_pos != $sld_pos and $sld_true_pos < $nb_slide) {
 	Yirl::yeReCreateString(@look_entrance[$sld_true_pos], $cur_txt_img, "text");
 	if (int($sld_true_pos) == 2) {
+	    my $replace_txt = "You: anything interesting";
+	    if (Yirl::yeGetInt(Yirl::yeGet(Yirl::yeGet($pc, "trait"), "shy")) < 0) {
+		$replace_txt = "You: looking for nude photo are you ?";
+	    }
 	    Yirl::ywReplaceEntry2(
 		$cur_cnt,
 		Yirl::yaeString("rgba: 255 155 155 255",
-				Yirl::ywTextScreenNew("You: looking for nude photo are you ?"),
+				Yirl::ywTextScreenNew($replace_txt),
 				"background"),
 		1);
-
 	}
     } elsif (int($sld_true_pos) == $nb_slide) {
 	    Yirl::ywReplaceEntry2($cur_cnt, $entrance_dialogue, 1);
@@ -369,9 +372,9 @@ sub widget_init
     Yirl::yePushBack($wid, $map_dialogue, "=map=dia");
     Yirl::yePushBack($wid, $basement_dialogue, "=bas=dia");
     Yirl::yePushBack($wid, $entrance_dialogue, "=entrance=dia");
-    #Yirl::yePushBack($entries, $door_dialogue);
+    Yirl::yePushBack($entries, $door_dialogue);
     #Yirl::yePushBack($entries, $map_dialogue);
-    Yirl::yePushBack($entries, $entrance_dialogue);
+    #Yirl::yePushBack($entries, $entrance_dialogue);
     Yirl::yeCreateString("text-screen", $txt_img, "<type>");
     Yirl::yaeString(
 	"rgba: 0 0 0 200",
@@ -402,6 +405,8 @@ sub widget_init
 	Yirl::yeCreateInt(4, $stats, "agility");
 	Yirl::yeCreateInt(4, $stats, "strength");
 	Yirl::yePrint($pc);
+	my $tr = Yirl::yeCreateArray($pc, "trait");
+	Yirl::yeCreateInt(-2, $tr, "shy");
 	print("NEED NEW PC\n");
     }
 

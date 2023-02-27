@@ -19,6 +19,8 @@ my $fight_menu;
 
 my $cur_geko;
 
+my $le_mod;
+
 sub make_pj_info
 {
     my $ret = "HP: " . Yirl::yeGetInt(Yirl::yeGet($pc, "life")) . "\n";
@@ -223,6 +225,44 @@ sub enter_action
     $time_acc = $next_acc;
 }
 
+sub look_entrance
+{
+    my $SLIDE_L = 550000;
+    $next_acc = $time_acc + Yirl::ywidGetTurnTimer();
+    $sld_pos = $time_acc / $SLIDE_L;
+    $sld_true_pos = $next_acc / $SLIDE_L;
+    $nb_slide=scalar @look_entrance;
+
+    if ($sld_true_pos != $sld_pos and $sld_true_pos < $nb_slide) {
+	Yirl::yeReCreateString(@look_entrance[$sld_true_pos], $cur_txt_img, "text");
+	if (int($sld_true_pos) == 2) {
+	    Yirl::ywReplaceEntry2(
+		$cur_cnt,
+		Yirl::yaeString("rgba: 255 155 155 255",
+				Yirl::ywTextScreenNew("You: looking for nude photo are you ?"),
+				"background"),
+		1);
+
+	} elsif (int($sld_true_pos) == $nb_slide - 1) {
+	    print("===== REPLACE !!!======\n");
+	    print("===== REPLACE !!!======\n");
+	    print("===== REPLACE !!!======\n");
+	    print("===== REPLACE !!!======\n");
+	    Yirl::ywReplaceEntry2($cur_cnt, $entrance_dialogue, 1);
+	    Yirl::yeRemoveChildByStr($cur_cnt, "action");
+	    Yirl::yePrint($entrance_dialogue)
+	}
+    }
+    $time_acc = $next_acc;
+}
+
+sub look_entrance_init
+{
+    Yirl::yeCreateFunction("look_entrance", $cur_cnt, "action");
+    Yirl::ywSetTurnLengthOverwrite(-1);
+    $time_acc = 0;
+}
+
 sub console_action
 {
     my $input_wid = $_[0];
@@ -300,8 +340,10 @@ sub widget_init
     Yirl::yeCreateInt(1, $wid, "current");
     Yirl::yePushBack($wid, $map_dialogue, "=map=dia");
     Yirl::yePushBack($wid, $basement_dialogue, "=bas=dia");
-    Yirl::yePushBack($entries, $door_dialogue);
-    #Yirl::yePushBack($entries, $map_dialogue);
+    Yirl::yePushBack($wid, $entrance_dialogue, "=entrance=dia");
+    #Yirl::yePushBack($entries, $door_dialogue);
+    Yirl::yePushBack($entries, $map_dialogue);
+    #Yirl::yePushBack($entries, $entrance_dialogue);
     Yirl::yeCreateString("text-screen", $txt_img, "<type>");
     Yirl::yaeString(
 	"rgba: 0 0 0 200",
@@ -309,7 +351,7 @@ sub widget_init
 	"color");
 
     # to remove
-    goto_basement
+    # goto_basement
 
     Yirl::yeCreateString($door, $txt_img, "text");
     Yirl::yeCreateString("rgba: 255 255 255 255", $wid, "background");
@@ -335,6 +377,7 @@ sub widget_init
 	print("NEED NEW PC\n");
     }
 
+    Yirl::yePushBack($le_mod, $wid, "main_wid");
     $ret = Yirl::ywidNewWidget($wid, "container");
     return $ret;
 }
@@ -357,6 +400,7 @@ sub mod_init
     Yirl::yeCreateFunction("do_console", $mod, "do_console");
     Yirl::yeCreateFunction("goto_basement", $mod, "goto_basement");
     Yirl::yeCreateFunction("attack", $mod, "attack");
+    Yirl::yeCreateFunction("look_entrance_init", $mod, "look_entrance_init");
 
     $input = Yirl::yaeString(
 	"text-input",
@@ -370,6 +414,7 @@ sub mod_init
     $original_time = Yirl::ywGetTurnLengthOverwrite();
 
     Yirl::ywSetTurnLengthOverwrite(0);
+    $le_mod = $mod;
     return $mod;
 }
 

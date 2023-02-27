@@ -217,17 +217,59 @@ sub enter_action
 				Yirl::ywTextScreenNew("going to the map..."),
 				"background"),
 		1);
-	} elsif (int($sld_true_pos) == $nb_slide - 1) {
+	}
+    } elsif (int($sld_true_pos) == $nb_slide) {
 	    Yirl::ywReplaceEntry2($cur_cnt, $map_dialogue, 1);
 	    Yirl::yeRemoveChildByStr($cur_cnt, "action");
-	}
     }
     $time_acc = $next_acc;
 }
 
-sub look_entrance
+sub goto_basement
+{
+    $basement_wid = Yirl::yeCreateArray();
+    Yirl::yePushBack($basement_wid, $basement_dialogue, "dialogue");
+    Yirl::yeCreateString("dialogue", $basement_wid, "<type>");
+    Yirl::yeCreateInt(20, $basement_wid, "txt-size");
+    Yirl::yeReCreateString($lab_map, $cur_txt_img, "text");
+    Yirl::ywReplaceEntry2($cur_cnt, $basement_wid, 1);
+}
+sub in_elevator
 {
     my $SLIDE_L = 550000;
+    $next_acc = $time_acc + Yirl::ywidGetTurnTimer();
+    $sld_pos = $time_acc / $SLIDE_L;
+    $sld_true_pos = $next_acc / $SLIDE_L;
+    $nb_slide=scalar @to_elevator;
+
+    if ($sld_true_pos != $sld_pos and $sld_true_pos < $nb_slide) {
+	Yirl::yeReCreateString(@to_elevator[$sld_true_pos], $cur_txt_img, "text");
+	if (int($sld_true_pos) == 0) {
+	    Yirl::ywReplaceEntry2(
+		$cur_cnt,
+		Yirl::yaeString("rgba: 155 155 155 255",
+				Yirl::ywTextScreenNew("You push the button"),
+				"background"),
+		1);
+
+	}
+    } elsif (int($sld_true_pos) == $nb_slide) {
+	Yirl::yeRemoveChildByStr($cur_cnt, "action");
+	goto_basement
+    }
+    $time_acc = $next_acc;
+}
+
+sub goto_elevator
+{
+    Yirl::yeCreateFunction("in_elevator", $cur_cnt, "action");
+    Yirl::ywSetTurnLengthOverwrite(-1);
+    $time_acc = 0;
+}
+
+sub look_entrance
+{
+    my $SLIDE_L = 600000;
     $next_acc = $time_acc + Yirl::ywidGetTurnTimer();
     $sld_pos = $time_acc / $SLIDE_L;
     $sld_true_pos = $next_acc / $SLIDE_L;
@@ -243,15 +285,11 @@ sub look_entrance
 				"background"),
 		1);
 
-	} elsif (int($sld_true_pos) == $nb_slide - 1) {
-	    print("===== REPLACE !!!======\n");
-	    print("===== REPLACE !!!======\n");
-	    print("===== REPLACE !!!======\n");
-	    print("===== REPLACE !!!======\n");
+	}
+    } elsif (int($sld_true_pos) == $nb_slide) {
 	    Yirl::ywReplaceEntry2($cur_cnt, $entrance_dialogue, 1);
 	    Yirl::yeRemoveChildByStr($cur_cnt, "action");
 	    Yirl::yePrint($entrance_dialogue)
-	}
     }
     $time_acc = $next_acc;
 }
@@ -290,16 +328,6 @@ sub console_action
 	Yirl::yeReCreateString($console_unknow, $cur_txt_img, "text");
     }
     return 1;
-}
-
-sub goto_basement
-{
-    $basement_wid = Yirl::yeCreateArray();
-    Yirl::yePushBack($basement_wid, $basement_dialogue, "dialogue");
-    Yirl::yeCreateString("dialogue", $basement_wid, "<type>");
-    Yirl::yeCreateInt(20, $basement_wid, "txt-size");
-    Yirl::yeReCreateString($lab_map, $cur_txt_img, "text");
-    Yirl::ywReplaceEntry2($cur_cnt, $basement_wid, 1);
 }
 
 sub do_console
@@ -342,8 +370,8 @@ sub widget_init
     Yirl::yePushBack($wid, $basement_dialogue, "=bas=dia");
     Yirl::yePushBack($wid, $entrance_dialogue, "=entrance=dia");
     #Yirl::yePushBack($entries, $door_dialogue);
-    Yirl::yePushBack($entries, $map_dialogue);
-    #Yirl::yePushBack($entries, $entrance_dialogue);
+    #Yirl::yePushBack($entries, $map_dialogue);
+    Yirl::yePushBack($entries, $entrance_dialogue);
     Yirl::yeCreateString("text-screen", $txt_img, "<type>");
     Yirl::yaeString(
 	"rgba: 0 0 0 200",
@@ -398,7 +426,7 @@ sub mod_init
 
     Yirl::yeCreateFunction("lab", $mod, "lab");
     Yirl::yeCreateFunction("do_console", $mod, "do_console");
-    Yirl::yeCreateFunction("goto_basement", $mod, "goto_basement");
+    Yirl::yeCreateFunction("goto_elevator", $mod, "goto_elevator");
     Yirl::yeCreateFunction("attack", $mod, "attack");
     Yirl::yeCreateFunction("look_entrance_init", $mod, "look_entrance_init");
 

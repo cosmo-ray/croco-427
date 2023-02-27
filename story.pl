@@ -52,6 +52,6 @@ $answers = Yirl::yeCreateArray($entrance_dialogue_2, "answers");
 $answer = Yirl::yeCreateArray($answers);
 Yirl::yeCreateString("Go to the elevator", $answer, "text");
 $actions = Yirl::yeCreateArray($answer, "actions");
-Yirl::yeCreateString("croco-427.goto_basement", $actions);
+Yirl::yeCreateString("croco-427.goto_elevator", $actions);
 
 #Yirl::yeCreateString("TODO", $new_txt);

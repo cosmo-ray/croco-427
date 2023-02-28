@@ -278,7 +278,8 @@ sub look_entrance
 	Yirl::yeReCreateString(@look_entrance[$sld_true_pos], $cur_txt_img, "text");
 	if (int($sld_true_pos) == 2) {
 	    my $replace_txt = "You: anything interesting";
-	    if (Yirl::yeGetInt(Yirl::yeGet(Yirl::yeGet($pc, "trait"), "shy")) < 0) {
+	    if (Yirl::yeGetInt(Yirl::yeGet(Yirl::yeGet($pc, "trait"), "shy")) < 0 &&
+		Yirl::yeIntSupTo(Yirl::yeGet(Yirl::yeGet($pc, "trait"), "perv"), 1)) {
 		$replace_txt = "You: looking for nude photo are you ?";
 	    }
 	    Yirl::ywReplaceEntry2(
@@ -406,6 +407,7 @@ sub widget_init
 	Yirl::yePrint($pc);
 	my $tr = Yirl::yeCreateArray($pc, "trait");
 	Yirl::yeCreateInt(-2, $tr, "shy");
+	Yirl::yeCreateInt(0, $tr, "perv");
 	print("NEED NEW PC\n");
     }
 

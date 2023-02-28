@@ -4,7 +4,73 @@
 	"answers": [
 	    {
 		"text": "go to LabA",
+		"condition": ["!exist", "croco-427.main_wid.labA"],
 		"action": ["croco-427.lab", "A"]
+	    },
+	    {
+		"text": "go to LabB",
+		"condition": ["!exist", "croco-427.main_wid.labB"],
+		"action": ["croco-427.lab", "B"]
+	    },
+	    {
+		"text": "go to LabC",
+		"condition": ["!exist", "croco-427.main_wid.labC"],
+		"action": ["croco-427.lab", "C"]
+	    },
+	    {
+		"text": "go to LabD",
+		"condition": ["!exist", "croco-427.main_wid.labD"],
+		"action": ["croco-427.lab", "D"]
+	    },
+	    {
+		"text": "go to Lab0",
+		"condition": ["!exist", "croco-427.main_wid.lab0"],
+		"action": ["croco-427.lab", "0"]
+	    },
+	    {
+		"text": "go to Lab1",
+		"condition": ["!exist", "croco-427.main_wid.lab1"],
+		"action": ["croco-427.lab", "1"]
+	    },
+	    {
+		"text": "go to Lab2",
+		"condition": ["!exist", "croco-427.main_wid.lab2"],
+		"action": ["croco-427.lab", "2"]
+	    },
+	    {
+		"text": "go to Lab3",
+		"condition": ["!exist", "croco-427.main_wid.lab3"],
+		"action": ["croco-427.lab", "3"]
+	    },
+	    {
+		"text": "go to Lab4",
+		"condition": ["!exist", "croco-427.main_wid.lab4"],
+		"action": ["croco-427.lab", "4"]
+	    },
+	    {
+		"text": "go to Lab5",
+		"condition": ["!exist", "croco-427.main_wid.lab5"],
+		"action": ["croco-427.lab", "5"]
+	    },
+	    {
+		"text": "go to Lab6",
+		"condition": ["!exist", "croco-427.main_wid.lab6"],
+		"action": ["croco-427.lab", "6"]
+	    },
+	    {
+		"text": "go to Lab7",
+		"condition": ["!exist", "croco-427.main_wid.lab7"],
+		"action": ["croco-427.lab", "7"]
+	    },
+	    {
+		"text": "go to Lab8",
+		"condition": ["!exist", "croco-427.main_wid.lab8"],
+		"action": ["croco-427.lab", "8"]
+	    },
+	    {
+		"text": "go to Lab9",
+		"condition": ["!exist", "croco-427.main_wid.lab9"],
+		"action": ["croco-427.lab", "9"]
 	    }
 	]
     }

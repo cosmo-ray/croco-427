@@ -72,8 +72,7 @@ sub lab
     my $whichlab = $_[2];
 
     print "--lab--\n";
-    Yirl::yePrint($whichlab);
-
+    Yirl::yeCreateInt(1, $cur_cnt, "lab" . Yirl::yeGetString($whichlab));
     $fight_menu = Yirl::yaeString(
 	make_pj_info(),
 	Yirl::yaeString(

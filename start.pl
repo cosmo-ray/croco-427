@@ -236,7 +236,11 @@ sub goto_basement
     Yirl::yePushBack($basement_wid, $basement_dialogue, "dialogue");
     Yirl::yeCreateString("dialogue", $basement_wid, "<type>");
     Yirl::yeCreateInt(20, $basement_wid, "txt-size");
-    Yirl::yeReCreateString($lab_map, $cur_txt_img, "text");
+    if (Yirl::yeIntSupTo(Yirl::yeGet($cur_cnt, "good_lab_cnt"), 2)) {
+	Yirl::yeReCreateString($lab_true_map, $cur_txt_img, "text");
+    } else {
+	Yirl::yeReCreateString($lab_map, $cur_txt_img, "text");
+    }
     Yirl::ywReplaceEntry2($cur_cnt, $basement_wid, 1);
 }
 sub in_elevator

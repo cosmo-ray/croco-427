@@ -71,7 +71,13 @@ sub lab
 {
     my $whichlab = $_[2];
 
-    print "--lab--\n";
+    print "--lab-- ", Yirl::yeGetString($whichlab), "\n";
+    if (Yirl::yeGetString($whichlab) eq "A" || Yirl::yeGetString($whichlab eq "3") || Yirl::yeGetString($gwhichlab eq "7")) {
+	print("increase good lab cnt !!!!!");
+	Yirl::yeAddInt(Yirl::yeGet($cur_cnt, "good_lab_cnt"), 1);
+	Yirl::yePrint(Yirl::ygGet("croco-427.main_wid.good_lab_cnt"));
+    }
+
     Yirl::yeCreateInt(1, $cur_cnt, "lab" . Yirl::yeGetString($whichlab));
     $fight_menu = Yirl::yaeString(
 	make_pj_info(),
@@ -367,6 +373,7 @@ sub widget_init
     $cur_txt_img = $txt_img;
     $basement_dialogue = Yirl::ygFileToEnt(0, "./basement-dialoue.json");
     Yirl::yePrint($basement_dialogue);
+    Yirl::yeCreateInt(0, $wid, "good_lab_cnt");
     Yirl::yeCreateInt(0, $wid, "totxp"); # total xp win
     Yirl::yeCreateInt(1, $wid, "current");
     Yirl::yePushBack($wid, $map_dialogue, "=map=dia");
@@ -382,7 +389,7 @@ sub widget_init
 	"color");
 
     # to remove
-    # goto_basement
+    goto_basement
 
     Yirl::yeCreateString($door, $txt_img, "text");
     Yirl::yeCreateString("rgba: 255 255 255 255", $wid, "background");

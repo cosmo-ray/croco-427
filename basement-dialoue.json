@@ -3,6 +3,11 @@
 	"text": "you're int the basement, Another coridor, you found another map",
 	"answers": [
 	    {
+		"text": "go to Hiden Elevator",
+		"condition": [">", "croco-427.main_wid.good_lab_cnt", 2],
+		"action": ["croco-427.lab", "A"]
+	    },
+	    {
 		"text": "go to LabA",
 		"condition": ["!exist", "croco-427.main_wid.labA"],
 		"action": ["croco-427.lab", "A"]

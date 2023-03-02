@@ -79,17 +79,6 @@ sub lab
     }
 
     Yirl::yeCreateInt(1, $cur_cnt, "lab" . Yirl::yeGetString($whichlab));
-    $fight_menu = Yirl::yaeString(
-	make_pj_info(),
-	Yirl::yaeString(
-	    "rgba: 155 255 155 255",
-	    Yirl::yaeString("menu", Yirl::yeCreateArray(), "<type>"),
-	    "background"),
-	"pre-text");
-
-    Yirl::ywMenuPushEntry($fight_menu, "attack", Yirl::ygGet("croco-427.attack"));
-    Yirl::ywMenuPushEntry($fight_menu, "use item");
-    Yirl::yePushBack($cur_cnt, $fight_menu,  "__fightmenu");
     $enemy_timer = Yirl::yeReCreateInt(0, $cur_cnt, "enemytime");
     $pc_timer = Yirl::yeReCreateInt(0, $cur_cnt, "pctimer");
     $enemy = Yirl::yeReCreateArray($cur_cnt, "enemy");
@@ -276,6 +265,53 @@ sub goto_elevator
     $time_acc = 0;
 }
 
+sub last_elevator
+{
+    my $SLIDE_L = 550000;
+    $next_acc = $time_acc + Yirl::ywidGetTurnTimer();
+    $sld_pos = $time_acc / $SLIDE_L;
+    $sld_true_pos = $next_acc / $SLIDE_L;
+    $nb_slide=scalar @last_elevator;
+
+    if ($sld_true_pos != $sld_pos and $sld_true_pos < $nb_slide) {
+	Yirl::yeReCreateString(@last_elevator[$sld_true_pos], $cur_txt_img, "text");
+	if (int($sld_true_pos) == 0) {
+	    Yirl::ywReplaceEntry2(
+		$cur_cnt,
+		Yirl::yaeString("rgba: 155 155 155 255",
+				Yirl::ywTextScreenNew("You push the button"),
+				"background"),
+		1);
+
+	}
+    } elsif (int($sld_true_pos) == $nb_slide) {
+	Yirl::yeRemoveChildByStr($cur_cnt, "action");
+	$enemy_timer = Yirl::yeReCreateInt(0, $cur_cnt, "enemytime");
+	$pc_timer = Yirl::yeReCreateInt(0, $cur_cnt, "pctimer");
+	$enemy = Yirl::yeReCreateArray($cur_cnt, "enemy");
+
+	my $ehp = 45;
+	Yirl::yeCreateInt($ehp, $enemy, "life");
+	my $estr = 7;
+	Yirl::yaeInt(
+	    2, Yirl::yaeInt($estr, Yirl::yeCreateArray($enemy, "stats"), "strength"),
+	    "agility");
+
+	$cur_geko = @croco[2];
+	Yirl::yeReCreateString($cur_geko, $cur_txt_img, "text");
+	Yirl::ywSetTurnLengthOverwrite(200000);
+	Yirl::yeCreateFunction("fight_action", $cur_cnt, "action");
+    }
+    $time_acc = $next_acc;
+}
+
+sub goto_last_elevator
+{
+    Yirl::yeCreateFunction("last_elevator", $cur_cnt, "action");
+    Yirl::ywSetTurnLengthOverwrite(-1);
+    $time_acc = 0;
+}
+
 sub look_entrance
 {
     my $SLIDE_L = 600000;
@@ -423,6 +459,20 @@ sub widget_init
     }
 
     Yirl::yePushBack($le_mod, $wid, "main_wid");
+
+    # create fight menu for latter
+    $fight_menu = Yirl::yaeString(
+	make_pj_info(),
+	Yirl::yaeString(
+	    "rgba: 155 255 155 255",
+	    Yirl::yaeString("menu", Yirl::yeCreateArray(), "<type>"),
+	    "background"),
+	"pre-text");
+
+    Yirl::ywMenuPushEntry($fight_menu, "attack", Yirl::ygGet("croco-427.attack"));
+    Yirl::ywMenuPushEntry($fight_menu, "use item");
+    Yirl::yePushBack($cur_cnt, $fight_menu,  "__fightmenu");
+
     $ret = Yirl::ywidNewWidget($wid, "container");
     return $ret;
 }
@@ -444,6 +494,7 @@ sub mod_init
     Yirl::yeCreateFunction("lab", $mod, "lab");
     Yirl::yeCreateFunction("do_console", $mod, "do_console");
     Yirl::yeCreateFunction("goto_elevator", $mod, "goto_elevator");
+    Yirl::yeCreateFunction("goto_last_elevator", $mod, "goto_last_elevator");
     Yirl::yeCreateFunction("attack", $mod, "attack");
     Yirl::yeCreateFunction("look_entrance_init", $mod, "look_entrance_init");
 

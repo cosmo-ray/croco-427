@@ -527,6 +527,7 @@ sub widget_init
     Yirl::ywMenuPushEntry($fight_menu, "use item");
     Yirl::yePushBack($cur_cnt, $fight_menu,  "__fightmenu");
     Yirl::yeCreateFunction("destroy", $wid, "destroy");
+    Yirl::ywSetTurnLengthOverwrite(0);
 
     $ret = Yirl::ywidNewWidget($wid, "container");
     return $ret;
@@ -561,10 +562,6 @@ sub mod_init
     Yirl::yaeInt(4, Yirl::yeCreateArray($input, "margin"), "size"),
     Yirl::yeCreateFunction("console_action", $input, "on-enter");
     Yirl::ygInitWidgetModule($mod, "croco-427", $callback);
-    #need a destroy callback that rest that.
-    $original_time = Yirl::ywGetTurnLengthOverwrite();
-
-    Yirl::ywSetTurnLengthOverwrite(0);
     $le_mod = $mod;
     return $mod;
 }

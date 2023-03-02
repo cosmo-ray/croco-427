@@ -21,6 +21,8 @@ my $cur_geko;
 
 my $le_mod;
 
+my $original_timer;
+
 sub make_pj_info
 {
     my $ret = "HP: " . Yirl::yeGetInt(Yirl::yeGet($pc, "life")) . "\n";
@@ -444,11 +446,19 @@ sub do_console
     return 1;
 }
 
+sub destroy
+{
+    Yirl::ywSetTurnLengthOverwrite($original_timer);
+}
+
 sub widget_init
 {
     $wid = $_[0];
     print "widget_init !!!!!!\n";
+    $original_timer = Yirl::ywGetTurnLengthOverwrite();
+    Yirl::ygModDir("croco-427");
     do "./story.pl";
+    Yirl::ygModDirOut();
     print $door;
     print $test;
     $entries = Yirl::yeCreateArray($wid, "entries");
@@ -473,7 +483,7 @@ sub widget_init
 	"color");
 
     # to remove
-    goto_basement
+    # goto_basement
 
     Yirl::yeCreateString($door, $txt_img, "text");
     Yirl::yeCreateString("rgba: 255 255 255 255", $wid, "background");
@@ -516,6 +526,7 @@ sub widget_init
     Yirl::ywMenuPushEntry($fight_menu, "attack", Yirl::ygGet("croco-427.attack"));
     Yirl::ywMenuPushEntry($fight_menu, "use item");
     Yirl::yePushBack($cur_cnt, $fight_menu,  "__fightmenu");
+    Yirl::yeCreateFunction("destroy", $wid, "destroy");
 
     $ret = Yirl::ywidNewWidget($wid, "container");
     return $ret;

@@ -4,7 +4,7 @@
 	"answers": [
 	    {
 		"text": "go to Hiden Elevator",
-		//"condition": [">", "croco-427.main_wid.good_lab_cnt", 2],
+		"condition": [">", "croco-427.main_wid.good_lab_cnt", 2],
 		"action": "croco-427.goto_last_elevator"
 	    },
 	    {

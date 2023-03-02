@@ -766,7 +766,6 @@ foreach (@to_elevator) {
 }
 
 @last_elevator = split "==\n" , <<EOC;
-$lab_true_map = <<EOC;
    ____    ____    ____    ____                ____   ____
   |Lab0|  |Lab1|  |Lab2|  |Lab3|         _    |Lab4| |Lab5|
   |_ __|  |_ __|  |_ __|  |_ __|  _     [E]   |_ __| |_ __|

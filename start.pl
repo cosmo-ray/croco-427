@@ -265,21 +265,37 @@ sub goto_elevator
     $time_acc = 0;
 }
 
-sub last_elevator
+sub nya_croco
 {
-    my $SLIDE_L = 550000;
+    my $SLIDE_L = 1550000;
     $next_acc = $time_acc + Yirl::ywidGetTurnTimer();
     $sld_pos = $time_acc / $SLIDE_L;
     $sld_true_pos = $next_acc / $SLIDE_L;
-    $nb_slide=scalar @last_elevator;
+    $nb_slide=scalar @croco;
 
     if ($sld_true_pos != $sld_pos and $sld_true_pos < $nb_slide) {
-	Yirl::yeReCreateString(@last_elevator[$sld_true_pos], $cur_txt_img, "text");
+	Yirl::yeReCreateString(@croco[$sld_true_pos], $cur_txt_img, "text");
 	if (int($sld_true_pos) == 0) {
 	    Yirl::ywReplaceEntry2(
 		$cur_cnt,
-		Yirl::yaeString("rgba: 155 155 155 255",
-				Yirl::ywTextScreenNew("You push the button"),
+		Yirl::yaeString("rgba: 255 155 155 255",
+				Yirl::ywTextScreenNew("- What is that ?"),
+				"background"),
+		1);
+
+	} elsif (int($sld_true_pos) == 1) {
+	    Yirl::ywReplaceEntry2(
+		$cur_cnt,
+		Yirl::yaeString("rgba: 255 155 155 255",
+				Yirl::ywTextScreenNew("- Oh it doesn't seems that bad"),
+				"background"),
+		1);
+
+	} elsif (int($sld_true_pos) == 2) {
+	    Yirl::ywReplaceEntry2(
+		$cur_cnt,
+		Yirl::yaeString("rgba: 155 255 155 255",
+				Yirl::ywTextScreenNew("- Are you sure about that ?"),
 				"background"),
 		1);
 
@@ -301,6 +317,34 @@ sub last_elevator
 	Yirl::yeReCreateString($cur_geko, $cur_txt_img, "text");
 	Yirl::ywSetTurnLengthOverwrite(200000);
 	Yirl::yeCreateFunction("fight_action", $cur_cnt, "action");
+    }
+    $time_acc = $next_acc;
+}
+
+sub last_elevator
+{
+    my $SLIDE_L = 550000;
+    $next_acc = $time_acc + Yirl::ywidGetTurnTimer();
+    $sld_pos = $time_acc / $SLIDE_L;
+    $sld_true_pos = $next_acc / $SLIDE_L;
+    $nb_slide=scalar @last_elevator;
+
+    if ($sld_true_pos != $sld_pos and $sld_true_pos < $nb_slide) {
+	Yirl::yeReCreateString(@last_elevator[$sld_true_pos], $cur_txt_img, "text");
+	if (int($sld_true_pos) == 0) {
+	    Yirl::ywReplaceEntry2(
+		$cur_cnt,
+		Yirl::yaeString("rgba: 155 155 155 255",
+				Yirl::ywTextScreenNew("You push the button"),
+				"background"),
+		1);
+
+	}
+    } elsif (int($sld_true_pos) == $nb_slide) {
+	Yirl::yeRemoveChildByStr($cur_cnt, "action");
+	Yirl::yeCreateFunction("nya_croco", $cur_cnt, "action");
+	$time_acc = 0;
+	return;
     }
     $time_acc = $next_acc;
 }

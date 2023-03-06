@@ -458,7 +458,6 @@ sub widget_init
     $original_timer = Yirl::ywGetTurnLengthOverwrite();
     Yirl::ygModDir("croco-427");
     do "./story.pl";
-    Yirl::ygModDirOut();
     print $door;
     print $test;
     $entries = Yirl::yeCreateArray($wid, "entries");
@@ -466,6 +465,7 @@ sub widget_init
     $cur_cnt = $wid;
     $cur_txt_img = $txt_img;
     $basement_dialogue = Yirl::ygFileToEnt(0, "./basement-dialoue.json");
+    Yirl::ygModDirOut();
     Yirl::yePrint($basement_dialogue);
     Yirl::yeCreateInt(0, $wid, "good_lab_cnt");
     Yirl::yeCreateInt(0, $wid, "totxp"); # total xp win

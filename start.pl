@@ -193,9 +193,13 @@ sub enter_action
 	if (int($sld_true_pos) == 7) {
 	    Yirl::ywReplaceEntry2(
 		$cur_cnt,
-		Yirl::yaeString("rgba: 255 155 155 255",
-				Yirl::ywTextScreenNew("You: so, what now ?"),
-				"background"),
+		Yirl::yaeString(
+		    "yirl",
+		    Yirl::yaeString(
+			"rgba: 255 155 155 255",
+			Yirl::ywTextScreenNew("{croco-427.main_wid.pc.name}: so, what now ?"),
+			"background"),
+		    "fmt"),
 		1);
 
 	} elsif (int($sld_true_pos) == 11) {

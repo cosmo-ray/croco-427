@@ -5,6 +5,7 @@ Yirl::yeCreateString("rgba: 255 255 255 255", $door_dialogue, "background");
 Yirl::yeCreateString("dialogue", $door_dialogue, "<type>");
 Yirl::yeCreateInt(20, $door_dialogue, "txt-size");
 Yirl::yeCreateInt(1, $door_dialogue, "is_looner_dialogue");
+
 $door_dialogue_2 = Yirl::yeCreateArray($door_dialogue, "dialogue");
 Yirl::yeCreateString("what to do", $door_dialogue_2, "text");
 $answers = Yirl::yeCreateArray($door_dialogue_2, "answers");
@@ -20,6 +21,13 @@ Yirl::yeCreateString("Look at the door", $answer, "text");
 $new_txt = Yirl::yeCreateArray($answer, "action");
 Yirl::yeCreateString("Dialogue.change-text", $new_txt);
 Yirl::yeCreateString("The door look doorestque", $new_txt);
+
+$answer = Yirl::yeCreateArray($answers);
+Yirl::yeCreateString("Do you remenber how to get in Akira ?", $answer, "text");
+$new_txt = Yirl::yeCreateArray($answer, "action");
+Yirl::yeCreateString("Dialogue.change-text", $new_txt);
+Yirl::yeCreateString("not at all {croco-427.main_wid.pc.name}", $new_txt);
+
 
 $map_dialogue = Yirl::yeCreateArray();
 Yirl::yeCreateString("rgba: 255 255 255 255", $map_dialogue, "background");

@@ -49,7 +49,7 @@ sub show_cur_geko
 
 sub attack
 {
-    my $atk = Yirl::yeGetIntAt(Yirl::yeGet($pc, "stats"), "strength");
+    my $atk = 1 + Yirl::yeGetIntAt(Yirl::yeGet($pc, "stats"), "strength");
     my $life = Yirl::yeGet($enemy, "life");
 
     Yirl::yeAddInt($life, -$atk);
@@ -60,7 +60,17 @@ sub attack
 
 	Yirl::yeAddInt($tot_xp, 3);
 	Yirl::yeAddInt($xp, 3);
-	goto_basement();
+	if (Yirl::yeGet($cur_cnt, "the_end")) {
+	    if (Yirl::yeIntInfTo($life, 1)) {
+		if (Yirl::yeGet($cur_cnt, "quit")) {
+		    Yirl::yesCall(Yirl::yeGet($cur_cnt, "quit"), $cur_cnt);
+		} else {
+		    Yirl::yesCall(Yirl::ygGet('FinishGame'));
+		}
+	    }
+	} else {
+	    goto_basement();
+	}
     } else {
 	show_cur_geko($life);
 	Yirl::ywSetTurnLengthOverwrite(200000);
@@ -74,7 +84,8 @@ sub lab
     my $whichlab = $_[2];
 
     print "--lab-- ", Yirl::yeGetString($whichlab), "\n";
-    if (Yirl::yeGetString($whichlab) eq "A" || Yirl::yeGetString($whichlab eq "3") || Yirl::yeGetString($gwhichlab eq "7")) {
+    if (Yirl::yeGetString($whichlab) eq "A" || Yirl::yeGetString($whichlab eq "3") ||
+	Yirl::yeGetString($gwhichlab eq "7")) {
 	print("increase good lab cnt !!!!!");
 	Yirl::yeAddInt(Yirl::yeGet($cur_cnt, "good_lab_cnt"), 1);
 	Yirl::yePrint(Yirl::ygGet("croco-427.main_wid.good_lab_cnt"));
@@ -312,6 +323,7 @@ sub nya_croco
 	$pc_timer = Yirl::yeReCreateInt(0, $cur_cnt, "pctimer");
 	$enemy = Yirl::yeReCreateArray($cur_cnt, "enemy");
 
+	Yirl::yeCreateInt(1, $cur_cnt, "the_end");
 	my $ehp = 45;
 	Yirl::yeCreateInt($ehp, $enemy, "life");
 	my $estr = 7;

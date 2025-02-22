@@ -84,8 +84,8 @@ sub lab
     my $whichlab = $_[2];
 
     print "--lab-- ", Yirl::yeGetString($whichlab), "\n";
-    if (Yirl::yeGetString($whichlab) eq "A" || Yirl::yeGetString($whichlab eq "3") ||
-	Yirl::yeGetString($gwhichlab eq "7")) {
+    if (Yirl::yeGetString($whichlab) eq "A" || Yirl::yeGetString($whichlab) eq "3" ||
+	Yirl::yeGetString($whichlab) eq "7") {
 	print("increase good lab cnt !!!!!");
 	Yirl::yeAddInt(Yirl::yeGet($cur_cnt, "good_lab_cnt"), 1);
 	Yirl::yePrint(Yirl::ygGet("croco-427.main_wid.good_lab_cnt"));

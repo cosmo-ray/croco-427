@@ -28,7 +28,6 @@ $new_txt = Yirl::yeCreateArray($answer, "action");
 Yirl::yeCreateString("Dialogue.change-text", $new_txt);
 Yirl::yeCreateString("not at all {croco-427.main_wid.pc.name}", $new_txt);
 
-
 $map_dialogue = Yirl::yeCreateArray();
 Yirl::yeCreateString("rgba: 255 255 255 255", $map_dialogue, "background");
 Yirl::yeCreateString("dialogue", $map_dialogue, "<type>");

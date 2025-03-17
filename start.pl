@@ -270,7 +270,7 @@ sub in_elevator
 	}
     } elsif (int($sld_true_pos) == $nb_slide) {
 	Yirl::yeRemoveChildByStr($cur_cnt, "action");
-	goto_basement
+	goto_basement;
     }
     $time_acc = $next_acc;
 }
@@ -575,7 +575,7 @@ sub mod_init
 	Yirl::yeCreateArray($mod, "console-text-input"),
 	"<type>"
 	);
-    Yirl::yaeInt(4, Yirl::yeCreateArray($input, "margin"), "size"),
+    Yirl::yaeInt(4, Yirl::yeCreateArray($input, "margin"), "size");
     Yirl::yeCreateFunction("console_action", $input, "on-enter");
     Yirl::ygInitWidgetModule($mod, "croco-427", $callback);
     $le_mod = $mod;
